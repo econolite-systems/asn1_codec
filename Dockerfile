@@ -3,6 +3,7 @@ FROM alpine:3.18 as builder
 USER root
 WORKDIR /asn1_codec
 VOLUME ["/asn1_codec_share"]
+ARG J2735_YEAR
 
 # add build dependencies
 RUN apk add --upgrade --no-cache --virtual .build-deps \
