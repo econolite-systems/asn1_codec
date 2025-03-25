@@ -502,6 +502,15 @@ bool ASN1_Codec::configure() {
         conf->set("api.version.request", "true", error_string);
         conf->set("api.version.fallback.ms", "0", error_string);
         conf->set("broker.version.fallback", "0.10.0.0", error_string);
+    } else if (kafkaType == "SECURE") {
+        // get sasl password
+        std::string password = getEnvironmentVariable("KAFKA_SASL_PASSWORD");
+
+        // set up config
+        conf->set("sasl.password", password.c_str(), error_string);
+        conf->set("api.version.request", "true", error_string);
+        conf->set("api.version.fallback.ms", "0", error_string);
+        conf->set("broker.version.fallback", "0.10.0.0", error_string);
     }
     else {
         logger->warn(fnname + ": KAFKA_TYPE environment variable not set to 'CONFLUENT'. A local kafka broker will be targeted.");
