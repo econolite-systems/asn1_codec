@@ -1,0 +1,21 @@
+name: Econolite Container Publish
+
+on:
+  push:
+    branches: [ "econolite" ]
+  pull_request:
+    branches: [ "econolite" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: azure/docker-login@v2
+      with:
+        login-server: cosysdev.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - run: |
+        docker build . --build-arg J2735_YEAR=2016 --file Dockerfile -t cosysdev.azurecr.io/ode-asn1:1.1.${{ github.run_number }}
+        docker push cosysdev.azurecr.io/ode-asn1:1.1.${{ github.run_number }}
